@@ -8,15 +8,24 @@ namespace imgshfl
 {
 	public sealed class Program
 	{
+		private static void Rename(string left)
+		{
+			System.Guid id = System.Guid.NewGuid();
+			System.IO.FileInfo file = new System.IO.FileInfo(left);
+			string new_name = file.DirectoryName + "\\" + id + file.Extension;
+			Console.WriteLine(new_name);
+			file.MoveTo(new_name);
+		}
+
 		private static void Enum(string path)
 		{
 			foreach (string name in System.IO.Directory.EnumerateFiles(path))
 			{
-				Console.WriteLine(name);
+				Rename(name);
 			}
 			foreach (string name in System.IO.Directory.EnumerateDirectories(path))
 			{
-				//Enum(name);
+				Enum(name);
 			}
 		}
 
