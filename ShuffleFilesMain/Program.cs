@@ -19,13 +19,24 @@ namespace shuffle
 
 		private static void Enum(string path)
 		{
-			foreach (string name in System.IO.Directory.EnumerateFiles(path))
+			if (System.IO.Directory.Exists(path))
 			{
-				Rename(name);
+				foreach (string name in System.IO.Directory.EnumerateFiles(path))
+				{
+					Rename(name);
+				}
+				foreach (string name in System.IO.Directory.EnumerateDirectories(path))
+				{
+					Enum(name);
+				}
 			}
-			foreach (string name in System.IO.Directory.EnumerateDirectories(path))
+			else if (System.IO.File.Exists(path))
 			{
-				Enum(name);
+				Rename(path);
+			}
+			else
+			{
+				Console.WriteLine("[{0}] not found.", path);
 			}
 		}
 
